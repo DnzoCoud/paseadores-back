@@ -1,0 +1,11 @@
+services:
+  app-paseadores:
+    build: .
+    container_name: app-paseadores
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    command: ./gradlew bootRun
