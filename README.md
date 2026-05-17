@@ -36,4 +36,18 @@ src/main/java/com/unbosque.paseadores
 │   └── user/
 │
 └── Application.java
+
+
+
+Controller
+↓
+Request DTO
+↓
+Service
+↓
+Mapper
+↓
+Repository
+↓
+SQL
 ```

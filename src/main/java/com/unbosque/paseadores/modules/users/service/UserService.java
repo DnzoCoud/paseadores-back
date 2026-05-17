@@ -18,12 +18,15 @@ public class UserService {
     private final UserMapper userMapper;
 
     public UserResponseDto save(RegisterUserRequest request) {
-        if (userRepository.existsByEmail(request.correo()))
-            throw new AlreadyExistsException("El email ya existe");
+        if (userRepository.existsByEmail(request.correo())) throw new AlreadyExistsException("El email ya existe");
 
         String hashedPassword = passwordEncoder.encode(request.contrasena());
         User user = userMapper.registerToModel(request);
         user.setContrasena(hashedPassword);
         return userMapper.toDto(userRepository.save(user));
+    }
+
+    public boolean existsById(Long id) {
+        return userRepository.existsById(id);
     }
 }

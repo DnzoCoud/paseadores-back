@@ -93,6 +93,11 @@ public class RelationalDatabaseServiceImpl implements RelationalDatabaseService 
     }
 
     @Override
+    public void delete(String sql, Object... params) {
+        jdbcTemplate.update(sql, params);
+    }
+
+    @Override
     public <T> T executeTransaction(Supplier<T> action) {
         return transactionTemplate.execute(status -> {
             try {

@@ -75,4 +75,8 @@ public class UserRepository {
     public boolean existsByEmail(String email) {
         return dbService.exists(UserQueries.EXISTS_BY_EMAIL, email);
     }
+
+    public boolean existsById(Long id) {
+        return dbService.exists(UserQueries.EXISTS_BY_ID, id);
+    }
 }

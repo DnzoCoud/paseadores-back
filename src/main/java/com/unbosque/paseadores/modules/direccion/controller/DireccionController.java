@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/v1/users/{userId}/direcciones")
+@RequestMapping("/api/v1/owners/{userId}/direcciones")
 @RequiredArgsConstructor
 public class DireccionController {
 

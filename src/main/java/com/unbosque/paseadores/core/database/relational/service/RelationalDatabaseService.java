@@ -36,6 +36,8 @@ public interface RelationalDatabaseService {
             Object... params
     );
 
+    void delete(String sql, Object... params);
+
     <T> T executeTransaction(
             Supplier<T> action
     );

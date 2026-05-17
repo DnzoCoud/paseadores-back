@@ -28,4 +28,11 @@ public final class UserQueries {
             WHERE correo = ?
         )
     """;
+    public static final String EXISTS_BY_ID = """
+        SELECT EXISTS(
+            SELECT 1
+            FROM usuario
+            WHERE id_usuario = ?
+        )
+    """;
 }
