@@ -5,6 +5,8 @@ import com.unbosque.paseadores.modules.paseador.model.Paseador;
 import com.unbosque.paseadores.modules.users.mapper.UserMapper;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper(
         componentModel = "spring",
         uses = { UserMapper.class }
@@ -12,4 +14,5 @@ import org.mapstruct.Mapper;
 
 public interface PaseadorMapper {
     PaseadorResponseDto toDto(Paseador paseador);
+    List<PaseadorResponseDto> toResponseList(List<Paseador> paseadores);
 }

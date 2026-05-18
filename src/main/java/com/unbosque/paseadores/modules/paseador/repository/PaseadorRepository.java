@@ -11,6 +11,8 @@ import com.unbosque.paseadores.modules.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class PaseadorRepository {
@@ -31,5 +33,12 @@ public class PaseadorRepository {
 
         newPaseador.setUsuario(user);
         return newPaseador;
+    }
+
+    public List<Paseador> findAll() {
+        return dbService.query(
+                PaseadorQueries.FIND_ALL,
+                paseadorRowMapper
+        );
     }
 }

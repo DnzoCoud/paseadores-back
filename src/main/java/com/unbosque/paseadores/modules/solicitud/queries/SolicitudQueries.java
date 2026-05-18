@@ -37,7 +37,7 @@ public class SolicitudQueries {
     """;
 
     public static final String ACEPTAR_SOLICITUD = """
-        CALL sp_aceptar_solicitud(?, ?)
+        CALL sp_aceptar_solicitud(?, ?, ?);
     """;
 
     public static final String RECHAZAR_SOLICITUD = """

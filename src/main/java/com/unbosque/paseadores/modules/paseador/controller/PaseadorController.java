@@ -1,6 +1,7 @@
 package com.unbosque.paseadores.modules.paseador.controller;
 import com.unbosque.paseadores.core.handlers.ApiResponse;
 import com.unbosque.paseadores.modules.paseador.service.PaseadorService;
+import com.unbosque.paseadores.modules.paseo.dto.PaseoEstadoResponseDto;
 import com.unbosque.paseadores.modules.paseo.dto.PaseoResponseDto;
 import com.unbosque.paseadores.modules.paseo.services.PaseoService;
 import com.unbosque.paseadores.modules.solicitud.dto.SolicitudEstadoResponseDto;
@@ -19,6 +20,13 @@ import java.util.List;
 public class PaseadorController {
     private final SolicitudService solicitudService;
     private final PaseoService paseoService;
+    private final PaseadorService paseadorService;
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<?>> findAll() {
+        var response = paseadorService.findAll();
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.ok(response));
+    }
 
     @GetMapping("/{walkerId}/requests")
     public ResponseEntity<ApiResponse<?>> findByWalkerId(
@@ -61,5 +69,21 @@ public class PaseadorController {
         var response = paseoService.findByWalkerId(walkerId);
 
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.ok(response));
+    }
+
+    @PatchMapping("/{walkerId}/walks/{walkId}/finish")
+    public ResponseEntity<PaseoEstadoResponseDto> finalizar(
+            @PathVariable
+            Long walkerId,
+            @PathVariable
+            Long walkId
+    ) {
+
+        return ResponseEntity.ok(
+                paseoService.finalizar(
+                        walkId,
+                        walkerId
+                )
+        );
     }
 }

@@ -46,4 +46,10 @@ public class PaseadorService {
             return mapper.toDto(paseadorRepository.save(nuevoPaseador));
         });
     }
+
+    public List<PaseadorResponseDto> findAll() {
+        return mapper.toResponseList(
+                paseadorRepository.findAll()
+        );
+    }
 }

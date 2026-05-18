@@ -1,6 +1,7 @@
 package com.unbosque.paseadores.modules.duenos.controller;
 
 import com.unbosque.paseadores.core.handlers.ApiResponse;
+import com.unbosque.paseadores.modules.paseo.dto.CreateCalificacionRequest;
 import com.unbosque.paseadores.modules.paseo.dto.PaseoResponseDto;
 import com.unbosque.paseadores.modules.paseo.services.PaseoService;
 import com.unbosque.paseadores.modules.pets.dto.CreatePerroRequest;
@@ -98,5 +99,27 @@ public class DuenoController {
         var response = paseoService.findByOwnerId(ownerId);
 
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.ok(response));
+    }
+
+    @PostMapping("/{ownerId}/walks/{walkId}/ratings")
+    public ResponseEntity<Void> calificar(
+            @PathVariable
+            Long ownerId,
+            @PathVariable
+            Long walkId,
+            @RequestBody
+            @Valid
+            CreateCalificacionRequest request
+
+    ) {
+        paseoService.calificar(
+                walkId,
+                ownerId,
+                request
+        );
+
+        return ResponseEntity.status(
+                HttpStatus.CREATED
+        ).build();
     }
 }

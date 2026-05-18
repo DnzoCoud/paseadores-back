@@ -29,7 +29,8 @@ public final class PerroQueries {
             peso,
             observaciones,
             foto,
-            id_dueno
+            id_dueno,
+            activo
         FROM perro
         WHERE id_dueno = ?
         AND activo = true

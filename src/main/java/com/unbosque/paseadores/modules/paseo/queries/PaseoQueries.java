@@ -44,4 +44,16 @@ public final class PaseoQueries {
         WHERE id_paseador = ?
         ORDER BY fecha_inicio DESC
     """;
+
+    public static final String FINALIZAR_PASEO = "CALL sp_finalizar_paseo(?, ?)";
+
+    public static final String FIND_ESTADO_BY_ID = """
+        SELECT
+            id_paseo,
+            estado
+        FROM paseo
+        WHERE id_paseo = ?
+    """;
+
+    public static final String CALIFICAR_PASEO = "CALL sp_calificar_paseo(?, ?, ?, ?)";
 }

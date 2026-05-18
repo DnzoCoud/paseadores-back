@@ -3,17 +3,21 @@ package com.unbosque.paseadores.core.handlers;
 import com.unbosque.paseadores.core.exceptions.AlreadyExistsException;
 import com.unbosque.paseadores.core.exceptions.BadAuthenticationException;
 import com.unbosque.paseadores.core.exceptions.NotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.BadSqlGrammarException;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -52,6 +56,33 @@ public class GlobalExceptionHandler {
                 .message(ex.getMessage())
                 .build();
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error(err));
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiResponse<Void>> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+        var err = ApiError.builder()
+                .code("MISSING_PARAMETER")
+                .message(ex.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.error(err));
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        var err = ApiError.builder()
+                .code("DATA_INTEGRITY_VIOLATION")
+                .message(ex.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error(err));
+    }
+
+    @ExceptionHandler(UncategorizedSQLException.class)
+    public ResponseEntity<ApiResponse<Void>> handleUncategorizedSQLException(UncategorizedSQLException ex) {
+        var err = ApiError.builder()
+                .code("QUERY_FAILED")
+                .message(Objects.requireNonNull(ex.getSQLException()).getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error(err));
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
