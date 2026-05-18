@@ -124,4 +124,18 @@ public class PaseoRepository {
                 }
         );
     }
+
+    public boolean isFinished(
+            Long walkId
+    ) {
+
+        Boolean result =
+                jdbcTemplate.queryForObject(
+                        PaseoQueries.PASEO_FINALIZADO,
+                        Boolean.class,
+                        walkId
+                );
+
+        return Boolean.TRUE.equals(result);
+    }
 }

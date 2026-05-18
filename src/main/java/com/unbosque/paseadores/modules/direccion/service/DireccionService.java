@@ -6,10 +6,13 @@ import com.unbosque.paseadores.modules.direccion.dto.DireccionResponseDto;
 import com.unbosque.paseadores.modules.direccion.mapper.DireccionMapper;
 import com.unbosque.paseadores.modules.direccion.model.Direccion;
 import com.unbosque.paseadores.modules.direccion.repository.DireccionRepository;
+import com.unbosque.paseadores.modules.events.model.EventType;
+import com.unbosque.paseadores.modules.events.service.EventTrackingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +20,7 @@ public class DireccionService {
     private final DireccionRepository repository;
     private final DireccionMapper mapper;
     private final RelationalDatabaseService dbService;
+    private final EventTrackingService trackingService;
 
     public DireccionResponseDto create(
             Long userId,
@@ -29,6 +33,15 @@ public class DireccionService {
                     repository.create(
                             direccion
                     );
+
+            trackingService.track(
+                    EventType.REQUEST_CREATED,
+                    direccion.getIdDireccion(),
+                    Map.of(
+                            "direccion",
+                            direccion.getIdDireccion()
+                    )
+            );
 
             repository.createOwnerProfile(
                     userId,

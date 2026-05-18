@@ -3,6 +3,8 @@ package com.unbosque.paseadores.modules.auth.services;
 import com.unbosque.paseadores.core.exceptions.BadAuthenticationException;
 import com.unbosque.paseadores.modules.auth.dto.LoginRequest;
 import com.unbosque.paseadores.modules.auth.dto.LoginResponse;
+import com.unbosque.paseadores.modules.events.model.EventType;
+import com.unbosque.paseadores.modules.events.service.EventTrackingService;
 import com.unbosque.paseadores.modules.users.dto.request.RegisterUserRequest;
 import com.unbosque.paseadores.modules.users.dto.response.UserResponseDto;
 import com.unbosque.paseadores.modules.users.mapper.UserMapper;
@@ -13,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -21,6 +25,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final UserService userService;
+    private final EventTrackingService trackingService;
 
     public LoginResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.email())
@@ -31,6 +36,13 @@ public class AuthService {
 
         String token = jwtService.generateToken(user);
 
+        trackingService.track(
+                EventType.USER_LOGGED_IN,
+                user.getIdUsuario(),
+                Map.of("correo", user.getCorreo()
+                )
+        );
+
         return LoginResponse.builder()
                 .token(token)
                 .type("Bearer")
@@ -39,7 +51,15 @@ public class AuthService {
     }
 
     public UserResponseDto register(RegisterUserRequest request) {
-        return userService.save(request);
+        var user = userService.save(request);
+
+        trackingService.track(
+                EventType.USER_REGISTERED,
+                user.idUsuario(),
+                Map.of("correo", user.correo()
+                )
+        );
+        return user;
     }
 
 }

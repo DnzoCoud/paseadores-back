@@ -1,8 +1,12 @@
 package com.unbosque.paseadores.modules.paseador.service;
 
 import com.unbosque.paseadores.core.database.relational.service.RelationalDatabaseService;
+import com.unbosque.paseadores.modules.events.model.EventType;
+import com.unbosque.paseadores.modules.events.service.EventTrackingService;
+import com.unbosque.paseadores.modules.paseador.dto.AllPaseadorResponseDto;
 import com.unbosque.paseadores.modules.paseador.dto.PaseadorResponseDto;
 import com.unbosque.paseadores.modules.paseador.dto.RegisterWalkerRequest;
+import com.unbosque.paseadores.modules.paseador.mapper.AllPaseadorRowMapper;
 import com.unbosque.paseadores.modules.paseador.mapper.PaseadorMapper;
 import com.unbosque.paseadores.modules.paseador.model.Paseador;
 import com.unbosque.paseadores.modules.paseador.repository.PaseadorRepository;
@@ -13,7 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +28,7 @@ public class PaseadorService {
     private final RelationalDatabaseService dbService;
     private final PaseadorMapper mapper;
     private final UserService userService;
+    private final EventTrackingService trackingService;
 
     public PaseadorResponseDto register(RegisterWalkerRequest request) {
         return dbService.executeTransaction(() -> {
@@ -43,12 +50,27 @@ public class PaseadorService {
                     .idUsuario(user.idUsuario())
                     .descripcion(request.descripcion()).build();
 
+            trackingService.track(
+                    EventType.WALKER_REGISTERED,
+                    nuevoPaseador.getIdUsuario(),
+                    Map.of(
+                            "fecha_registro",
+                            nuevoPaseador.getFechaRegistro()
+                    )
+            );
+
             return mapper.toDto(paseadorRepository.save(nuevoPaseador));
         });
     }
 
-    public List<PaseadorResponseDto> findAll() {
-        return mapper.toResponseList(
+    public List<AllPaseadorResponseDto> findAll() {
+        trackingService.track(
+                EventType.FIND_WALKERS,
+                0L,
+                Map.of("fecha_ejecucion", LocalDateTime.now())
+        );
+
+        return mapper.toResponseDtoList(
                 paseadorRepository.findAll()
         );
     }

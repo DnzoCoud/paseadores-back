@@ -1,6 +1,8 @@
 package com.unbosque.paseadores.modules.paseo.services;
 
 import com.unbosque.paseadores.core.database.relational.service.RelationalDatabaseService;
+import com.unbosque.paseadores.modules.events.model.EventType;
+import com.unbosque.paseadores.modules.events.service.EventTrackingService;
 import com.unbosque.paseadores.modules.paseo.dto.CreateCalificacionRequest;
 import com.unbosque.paseadores.modules.paseo.dto.PaseoEstadoResponseDto;
 import com.unbosque.paseadores.modules.paseo.dto.PaseoResponseDto;
@@ -11,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +23,7 @@ public class PaseoService {
     private final PaseoRepository repository;
     private final PaseoMapper mapper;
     private final RelationalDatabaseService dbService;
+    private final EventTrackingService trackingService;
 
     public List<PaseoResponseDto> findByOwnerId(
             Long ownerId
@@ -60,6 +65,12 @@ public class PaseoService {
                     repository.findEstadoById(
                             paseoId
                     );
+
+            trackingService.track(
+                    EventType.WALK_FINISHED,
+                    estado.getIdPaseo(),
+                    Map.of("fecha_ejecucion", LocalDateTime.now())
+            );
 
             return PaseoEstadoResponseDto.builder()
                     .idPaseo(

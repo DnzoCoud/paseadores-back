@@ -56,4 +56,10 @@ public final class PaseoQueries {
     """;
 
     public static final String CALIFICAR_PASEO = "CALL sp_calificar_paseo(?, ?, ?, ?)";
+
+    public static final String PASEO_FINALIZADO = """
+        SELECT estado = 'FINALIZADO'
+        FROM paseo
+        WHERE id_paseo = ?
+    """;
 }

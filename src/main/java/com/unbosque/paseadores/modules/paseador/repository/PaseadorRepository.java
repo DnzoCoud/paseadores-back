@@ -2,7 +2,9 @@ package com.unbosque.paseadores.modules.paseador.repository;
 
 import com.unbosque.paseadores.core.database.relational.service.RelationalDatabaseService;
 import com.unbosque.paseadores.core.exceptions.NotFoundException;
+import com.unbosque.paseadores.modules.paseador.mapper.AllPaseadorRowMapper;
 import com.unbosque.paseadores.modules.paseador.mapper.PaseadorRowMapper;
+import com.unbosque.paseadores.modules.paseador.model.AllPaseador;
 import com.unbosque.paseadores.modules.paseador.model.Paseador;
 import com.unbosque.paseadores.modules.paseador.queries.PaseadorQueries;
 import com.unbosque.paseadores.modules.users.mapper.UserRowMapper;
@@ -19,6 +21,7 @@ public class PaseadorRepository {
     private final RelationalDatabaseService dbService;
     private final PaseadorRowMapper paseadorRowMapper;
     private final UserRepository userRepository;
+    private final AllPaseadorRowMapper allPaseadorRowMapper;
 
     public Paseador save(Paseador paseador) {
         Paseador newPaseador = dbService.queryOne(
@@ -35,10 +38,10 @@ public class PaseadorRepository {
         return newPaseador;
     }
 
-    public List<Paseador> findAll() {
+    public List<AllPaseador> findAll() {
         return dbService.query(
                 PaseadorQueries.FIND_ALL,
-                paseadorRowMapper
+                allPaseadorRowMapper
         );
     }
 }
