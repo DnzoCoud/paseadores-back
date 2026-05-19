@@ -26,12 +26,13 @@ public class DireccionController {
             CreateDireccionRequest request
 
     ) {
+        var resp = service.create(
+                userId,
+                request
+        );
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(ApiResponse.ok(service.create(
-                        userId,
-                        request
-                )) );
+                .body(ApiResponse.ok(resp));
     }
 
     @GetMapping

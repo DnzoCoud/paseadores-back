@@ -36,10 +36,10 @@ public class DireccionService {
 
             trackingService.track(
                     EventType.REQUEST_CREATED,
-                    direccion.getIdDireccion(),
+                    savedDireccion.getIdDireccion(),
                     Map.of(
                             "direccion",
-                            direccion.getIdDireccion()
+                            savedDireccion.getIdDireccion()
                     )
             );
 
