@@ -1,0 +1,5 @@
+CREATE TRIGGER tr_auditoria_paseo
+AFTER INSERT OR UPDATE OR DELETE
+ON paseo
+FOR EACH ROW
+EXECUTE FUNCTION fn_auditoria_paseo();
