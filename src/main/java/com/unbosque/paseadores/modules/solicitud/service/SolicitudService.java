@@ -173,4 +173,14 @@ public class SolicitudService {
                 .map(mapper::toResponse)
                 .toList();
     }
+
+    public List<SolicitudResponseDto> findByOwnerId(
+            Long ownerId
+    ) {
+
+        return repository.findByOwnerId(ownerId)
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
+    }
 }

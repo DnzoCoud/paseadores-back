@@ -46,7 +46,7 @@ public class DuenoController {
     }
 
     @GetMapping("/{ownerId}/pets")
-    public ResponseEntity<ApiResponse<List<PerroResponseDto>>> findByOwnerId(
+    public ResponseEntity<ApiResponse<List<PerroResponseDto>>> findPetsByOwnerId(
             @PathVariable
             Long ownerId
     ) {
@@ -77,6 +77,17 @@ public class DuenoController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
+                .body(ApiResponse.ok(response));
+    }
+
+    @GetMapping("/{ownerId}/requests")
+    public ResponseEntity<ApiResponse<?>> findRequestsByOwnerId(
+            @PathVariable
+            Long ownerId
+    ) {
+        var response = solicitudService.findByOwnerId(ownerId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(ApiResponse.ok(response));
     }
 

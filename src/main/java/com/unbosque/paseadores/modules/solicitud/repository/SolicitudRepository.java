@@ -208,4 +208,14 @@ public class SolicitudRepository {
                 walkerId
         );
     }
+
+    public List<Solicitud> findByOwnerId(
+            Long ownerId
+    ) {
+        return dbService.query(
+                SolicitudQueries.FIND_BY_OWNER_ID,
+                mapper,
+                ownerId
+        );
+    }
 }

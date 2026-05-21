@@ -59,4 +59,19 @@ public class SolicitudQueries {
         WHERE id_paseador = ?
         ORDER BY fecha_solicitud DESC
     """;
+    public static final String FIND_BY_OWNER_ID = """
+        SELECT
+            id_solicitud,
+            fecha_solicitud,
+            estado,
+            hora_sugerida,
+            punto_encuentro,
+            cantidad_perros,
+            observaciones,
+            id_dueno,
+            id_paseador
+        FROM solicitud
+        WHERE id_dueno = ?
+        ORDER BY fecha_solicitud DESC
+    """;
 }
