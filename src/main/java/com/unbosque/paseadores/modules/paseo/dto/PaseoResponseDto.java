@@ -16,6 +16,7 @@ public record PaseoResponseDto(
         String ruta,
         String observaciones,
         Long idSolicitud,
-        Long idPaseador
+        Long idPaseador,
+        Boolean calificado
 ) {
 }

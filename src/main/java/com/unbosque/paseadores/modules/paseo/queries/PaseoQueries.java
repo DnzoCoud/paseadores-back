@@ -14,20 +14,18 @@ public final class PaseoQueries {
             p.ruta,
             p.observaciones,
             p.id_solicitud,
-            p.id_paseador
+            p.id_paseador,
+            EXISTS (
+                SELECT 1 FROM calificacion c
+                WHERE c.id_paseo = p.id_paseo
+                AND c.id_emisor = ?
+            ) AS calificado
         FROM paseo p
-    
-        INNER JOIN paseo_perro pp
-            ON pp.id_paseo = p.id_paseo
-    
-        INNER JOIN perro pe
-            ON pe.id_perro = pp.id_perro
-    
+        INNER JOIN paseo_perro pp ON pp.id_paseo = p.id_paseo
+        INNER JOIN perro pe ON pe.id_perro = pp.id_perro
         WHERE pe.id_dueno = ?
-    
         ORDER BY p.fecha_inicio DESC
     """;
-
     public static final String FIND_BY_WALKER_ID = """
         SELECT
             id_paseo,
@@ -39,7 +37,8 @@ public final class PaseoQueries {
             ruta,
             observaciones,
             id_solicitud,
-            id_paseador
+            id_paseador,
+            false AS calificado
         FROM paseo
         WHERE id_paseador = ?
         ORDER BY fecha_inicio DESC

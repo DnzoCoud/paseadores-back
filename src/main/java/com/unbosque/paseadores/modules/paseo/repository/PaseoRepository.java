@@ -24,16 +24,14 @@ public class PaseoRepository {
     private final PaseoEstadoRowMapper estadoMapper;
     private final JdbcTemplate jdbcTemplate;
 
-    public List<Paseo> findByOwnerId(
-            Long ownerId
-    ) {
-
+    public List<Paseo> findByOwnerId(Long ownerId) {
         return dbService.query(
                 PaseoQueries.FIND_BY_OWNER_ID,
                 mapper,
-                ownerId
+                ownerId,  // para la subconsulta EXISTS
+                ownerId   // para el WHERE
         );
-    }
+        }
 
     public List<Paseo> findByWalkerId(
             Long walkerId

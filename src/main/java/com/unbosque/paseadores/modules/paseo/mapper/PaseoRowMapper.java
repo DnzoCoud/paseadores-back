@@ -58,6 +58,8 @@ public class PaseoRowMapper
                 .idPaseador(
                         rs.getLong("id_paseador")
                 )
+                .calificado(rs.getBoolean("calificado")
+                )
                 .build();
     }
 }

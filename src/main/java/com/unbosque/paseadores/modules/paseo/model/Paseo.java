@@ -33,4 +33,6 @@ public class Paseo {
     private Long idSolicitud;
 
     private Long idPaseador;
+
+    private Boolean calificado;
 }
