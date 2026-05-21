@@ -50,16 +50,18 @@ public class PaseadorService {
                     .idUsuario(user.idUsuario())
                     .descripcion(request.descripcion()).build();
 
+            Paseador savedPaseador = paseadorRepository.save(nuevoPaseador);
+
             trackingService.track(
                     EventType.WALKER_REGISTERED,
-                    nuevoPaseador.getIdUsuario(),
+                    user.idUsuario(),
                     Map.of(
                             "fecha_registro",
-                            nuevoPaseador.getFechaRegistro()
+                            savedPaseador.getFechaRegistro()
                     )
             );
 
-            return mapper.toDto(paseadorRepository.save(nuevoPaseador));
+            return mapper.toDto(savedPaseador);
         });
     }
 
