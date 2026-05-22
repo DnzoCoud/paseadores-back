@@ -1,3 +1,63 @@
+CREATE DOMAIN estado_paseo AS VARCHAR(20)
+CHECK (
+    VALUE IN (
+        'SOLICITADO',
+        'ACEPTADO',
+        'EN_CURSO',
+        'FINALIZADO',
+        'CANCELADO'
+    )
+);
+
+CREATE DOMAIN estado_solicitud AS VARCHAR(20)
+CHECK (
+    VALUE IN (
+        'PENDIENTE',
+        'ACEPTADA',
+        'RECHAZADA',
+        'CANCELADA'
+    )
+);
+
+CREATE DOMAIN puntuacion AS NUMERIC(2,1)
+CHECK (
+    VALUE >= 0
+    AND VALUE <= 5
+);
+
+
+CREATE DOMAIN dia_semana AS VARCHAR(15)
+CHECK (
+    VALUE IN (
+        'LUNES',
+        'MARTES',
+        'MIERCOLES',
+        'JUEVES',
+        'VIERNES',
+        'SABADO',
+        'DOMINGO'
+    )
+);
+
+CREATE SEQUENCE seq_paseo START 1;
+CREATE SEQUENCE seq_solicitud START 1;
+CREATE SEQUENCE seq_mensaje START 1;
+CREATE SEQUENCE seq_calificacion START 1;
+CREATE SEQUENCE seq_perro START 1;
+
+DROP TABLE IF EXISTS rol;
+DROP TABLE IF EXISTS usuario;
+DROP TABLE IF EXISTS usuario_rol;
+DROP TABLE IF EXISTS paseador;
+DROP TABLE IF EXISTS direccion;
+DROP TABLE IF EXISTS dueno;
+DROP TABLE IF EXISTS perro;
+DROP TABLE IF EXISTS solicitud;
+DROP TABLE IF EXISTS paseo;
+DROP TABLE IF EXISTS paseo_perro;
+DROP TABLE IF EXISTS calificacion;
+DROP TABLE IF EXISTS solicitud_perro;
+DROP TABLE IF EXISTS auditoria_paseo;
 -- ============================================
 -- CREACIÓN DE BASE DE DATOS PASEO DE PERROS
 -- ============================================
